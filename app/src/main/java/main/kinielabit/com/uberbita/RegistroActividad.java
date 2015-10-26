@@ -63,6 +63,7 @@ public class RegistroActividad extends AppCompatActivity implements RegisteredTr
         setSupportActionBar(toolbar);
 
         openDataBase();
+        saveInfo();
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
 
@@ -99,7 +100,6 @@ public class RegistroActividad extends AppCompatActivity implements RegisteredTr
 
     private static String uniqueID = null;
     private static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";
-    private static final String PREF_SEND_DATA_DEVICE = "PREF_DATA_DEVICE";
 
     private String getId(Context context) {
         if (uniqueID == null) {
@@ -176,9 +176,25 @@ public class RegistroActividad extends AppCompatActivity implements RegisteredTr
     }
 
     private void saveInfo(){
-        ContentValues cv = new ContentValues();
-        cv.put(InfoCelular.PHONE, getPhone());
-        cv.put(InfoCelular.UUID, getId(this));
+
+        String key = "wasSave";
+        SharedPreferences sharedPref = this
+                .getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        boolean wasSave = sharedPref.getBoolean(key, false);
+
+        if (!wasSave) {
+            ContentValues cv = new ContentValues();
+            cv.put(InfoCelular.PHONE, getPhone());
+            cv.put(InfoCelular.UUID, getId(this));
+
+            dataBase.insert(InfoCelular.TAB_NAME, null, cv);
+
+            editor.putBoolean(key, true);
+            editor.commit();
+        }
+
+
     }
 
     private void saveTrip(){

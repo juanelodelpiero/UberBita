@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">UberBita</string>
-    <string name="action_settings">Exportar Bitacora</string>
+    <string name="action_settings">Exportar y enviar</string>
     <string name="export_folder">UberBita</string>
 
     <!-- TODO: Remove or change this placeholder text -->
