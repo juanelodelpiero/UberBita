@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">UberBita</string>
+    <string name="action_settings">Exportar Bitacora</string>
+    <string name="export_folder">UberBita</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
