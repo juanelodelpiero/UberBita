@@ -37,6 +37,7 @@ import java.util.UUID;
 import com.cardboardmx.uberbita.database.tables.InfoCelular;
 import com.cardboardmx.uberbita.database.tables.Viajes;
 import com.cardboardmx.uberbita.database.DBHelper;
+import com.cardboardmx.uberbita.service.RegisterActivity;
 
 public class RegistroActividad extends AppCompatActivity implements RegisteredTrips.OnFragmentInteractionListener{
 
@@ -48,10 +49,10 @@ public class RegistroActividad extends AppCompatActivity implements RegisteredTr
     private String mLatitude;
     private String mLongitude;
 
-    private SimpleDateFormat DF_SQLITE_= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    private SimpleDateFormat DF_SQLITE_= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private RegisteredTrips registeredTrips;
-
+    private Boolean var = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +81,9 @@ public class RegistroActividad extends AppCompatActivity implements RegisteredTr
             @Override
             public void onClick(View view) {
 
-                if ((mLatitude!= null && mLongitude != null)
+                if
+                        //(var){
+                        ((mLatitude!= null && mLongitude != null)
                 && (!mLatitude.isEmpty() || !mLongitude.isEmpty())){
                     saveTrip();
                     Snackbar.make(view, "Viaje guardado", Snackbar.LENGTH_LONG)
@@ -89,13 +92,17 @@ public class RegistroActividad extends AppCompatActivity implements RegisteredTr
                 }else {
                     Snackbar.make(view, "Espera unos segundos e intentalo de nuevo", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-
+                    var = true;
 
                 }
 
 
             }
         });
+
+
+        Intent intent = new Intent(this, RegisterActivity.class);
+        startService(intent);
     }
 
 

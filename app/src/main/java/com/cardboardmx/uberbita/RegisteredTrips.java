@@ -107,7 +107,7 @@ public class RegisteredTrips extends Fragment {
 
 
     private void initDataset() {
-       SQLiteDatabase dataBase = RegistroActividad.dbHelper.getReadableDatabase("");
+       SQLiteDatabase dataBase = RegistroActividad.dbHelper.getReadableDatabase("SOCIOSGDLMX");
         Cursor cursor = dataBase.query(Viajes.TAB_NAME, null, null, null, null, null, null);
 
         mDataset = new ArrayList<>();
