@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -24,6 +25,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 
+import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
 
 import java.io.File;
@@ -37,9 +39,8 @@ import java.util.UUID;
 import com.cardboardmx.uberbita.database.tables.InfoCelular;
 import com.cardboardmx.uberbita.database.tables.Viajes;
 import com.cardboardmx.uberbita.database.DBHelper;
-import com.cardboardmx.uberbita.service.RegisterActivity;
 
-public class RegistroActividad extends AppCompatActivity implements RegisteredTrips.OnFragmentInteractionListener{
+public class RegistroActividad extends AppCompatActivity implements RegisteredTrips.OnFragmentInteractionListener, GenericTaskFragment.TaskCallBacks{
 
 
 
@@ -49,10 +50,11 @@ public class RegistroActividad extends AppCompatActivity implements RegisteredTr
     private String mLatitude;
     private String mLongitude;
 
-    private SimpleDateFormat DF_SQLITE_= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private SimpleDateFormat DF_SQLITE_= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
     private RegisteredTrips registeredTrips;
-    private Boolean var = false;
+    private GenericTaskFragment taskFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,9 +83,7 @@ public class RegistroActividad extends AppCompatActivity implements RegisteredTr
             @Override
             public void onClick(View view) {
 
-                if
-                        //(var){
-                        ((mLatitude!= null && mLongitude != null)
+                if ((mLatitude!= null && mLongitude != null)
                 && (!mLatitude.isEmpty() || !mLongitude.isEmpty())){
                     saveTrip();
                     Snackbar.make(view, "Viaje guardado", Snackbar.LENGTH_LONG)
@@ -92,7 +92,7 @@ public class RegistroActividad extends AppCompatActivity implements RegisteredTr
                 }else {
                     Snackbar.make(view, "Espera unos segundos e intentalo de nuevo", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                    var = true;
+
 
                 }
 
@@ -100,9 +100,14 @@ public class RegistroActividad extends AppCompatActivity implements RegisteredTr
             }
         });
 
+        FragmentManager fm = getSupportFragmentManager();
+        taskFragment = (GenericTaskFragment) fm.findFragmentByTag(GenericTaskFragment.TAG_TASK_FRAGMENT);
+        if (taskFragment == null) {
+            taskFragment = new GenericTaskFragment();
+            fm.beginTransaction().add(taskFragment, GenericTaskFragment.TAG_TASK_FRAGMENT).commit();
+        }
 
-        Intent intent = new Intent(this, RegisterActivity.class);
-        startService(intent);
+
     }
 
 
@@ -330,6 +335,26 @@ public class RegistroActividad extends AppCompatActivity implements RegisteredTr
 
     @Override
     public void onFragmentInteraction(String uri) {
+
+    }
+
+    @Override
+    public void onPreExcute() {
+
+    }
+
+    @Override
+    public void onProgressUpdate() {
+
+    }
+
+    @Override
+    public void onCancelled() {
+
+    }
+
+    @Override
+    public void onPostExcute(Cursor result) {
 
     }
 }
